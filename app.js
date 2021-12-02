@@ -1,22 +1,16 @@
 const fs = require("fs");
-const num = +fs.readFileSync("./.txt").toString().trim();
+const [A, B, V] = fs
+    .readFileSync("./.txt")
+    .toString()
+    .trim()
+    .split(" ")
+    .map((str) => +str);
 
-// 1. 그룹요소 수: 1 + 2 + 3 + 4 증가
-// 2. 그룹 별 분모 분자 합: 그룹 요소 수 + 1
-// 3. 방향: 그룹 요소수가 짝수면 분자가 점점 증가
+// 1. A-B만큼 올라가는 걸 몇 번 했을 때 V보다 작을 지 계산
+// 2. 그 전에 A만큼 올라갔을 때에 이미 넘었는지 체크
+// 3. 안올라갔었다면 몇 번 + 1
 
-let groupNum = 1;
-
-const getSum = (groupNum) => (groupNum * (groupNum + 1)) / 2;
-while (true) {
-    if (num - getSum(groupNum) <= 0) {
-        break;
-    }
-    groupNum++;
-}
-const restNum = num - getSum(groupNum - 1);
-console.log(
-    groupNum % 2
-        ? `${groupNum + 1 - restNum}/${restNum}`
-        : `${restNum}/${groupNum + 1 - restNum}`
-);
+// A + (totalDays) - B * (totalDays -1) >= V
+// totalDays * (A - B) >= V - B
+const totalDays = Math.ceil((V - B) / (A - B));
+console.log(totalDays);
